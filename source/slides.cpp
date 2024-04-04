@@ -15,6 +15,7 @@
 #include <QStringList>
 #include <QTime>
 #include <QTimer>
+#include <QStandardPaths>
 
 QString image_directory[128], temp_directory;
 QDir path;
@@ -27,14 +28,12 @@ Slides::Slides(QWidget *parent)
 	, ui(new Ui::Slides)
 {
 	ui->setupUi(this);
-
+    period = 8;
+    showFullScreen();
+    on_actionOpen_triggered();
 	QTime time = QTime::currentTime();
 	qsrand((uint)time.msec());
 
-	QPixmap pixmap("extras/right_arrow.png");
-	QIcon ButtonIcon(pixmap);
-	ui->pushButton->setIcon(ButtonIcon);
-	ui->pushButton->setIconSize(pixmap.rect().size());
 }
 
 int Slides::rand_int(int low, int high)
@@ -66,7 +65,7 @@ void Slides::set_timer()
 	{
 		timer = new QTimer(this);
 		timer_checker = true;
-		connect(timer, SIGNAL(timeout()), this, SLOT(timer_event()));
+        connect(timer, SIGNAL(timeout()), this, SLOT(next_image()));
 		timer->start(period*1000);
 	}
 	else if (period != 0)
@@ -75,17 +74,7 @@ void Slides::set_timer()
 	}
 }
 
-void Slides::timer_event()
-{
-	if (shuffle_checker)
-	{
-		next_shuffle_image();
-	}
-	else
-	{
-		next_image();
-	}
-}
+
 
 void Slides::stop_timer()
 {
@@ -189,7 +178,6 @@ void Slides::start_animation()
 	anim->setStartValue(0.0);
 	anim->setEndValue(1.0);
 	anim->setEasingCurve(QEasingCurve::OutQuad);
-	connect(anim, &QPropertyAnimation::finished, [=](){});
 	anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -216,13 +204,6 @@ void Slides::resizeEvent(QResizeEvent *event)
 	ui->label->resize(ui->centralwidget->width(), ui->centralwidget->height());
 	ui->label_2->resize(ui->centralwidget->width(), ui->centralwidget->height());
 
-	ui->pushButton->resize(ui->centralwidget->width() / 5, ui->centralwidget->height());
-	ui->pushButton->move(4 * ui->centralwidget->width() / 5, 0);
-
-	ui->pushButton_2->resize(ui->centralwidget->width() / 5, ui->centralwidget->height());
-
-	ui->pushButton_3->resize(3 * ui->centralwidget->width() / 5, ui->centralwidget->height());
-	ui->pushButton_3->move(ui->centralwidget->width() / 5, 0);
 	if (image_checker)
 	{
 		image_renderer();
@@ -230,71 +211,16 @@ void Slides::resizeEvent(QResizeEvent *event)
 	QWidget::resizeEvent(event);
 }
 
-void Slides::on_pushButton_clicked()
-{
-	stop_timer();
-	if (shuffle_checker)
-	{
-		next_shuffle_image();
-	}
-	else
-	{
-		next_image();
-	}
-	set_timer();
-}
-
-void Slides::on_pushButton_2_clicked()
-{
-	stop_timer();
-	if (shuffle_checker)
-	{
-		next_shuffle_image();
-	}
-	else
-	{
-		previous_image();
-	}
-
-	set_timer();
-}
-
-void Slides::on_pushButton_3_clicked()
-{
-	if (mouse_click_checker)
-	{
-		if (image_checker)
-		{
-			if (isFullScreen())
-			{
-				ui->menubar->show();
-				showNormal();
-			}
-			else
-			{
-				ui->menubar->hide();
-				showFullScreen();
-			}
-		}
-		else
-		{
-			on_actionOpen_triggered();
-		}
-	}
-	else
-	{
-		mouse_click_checker = true;
-		QTimer::singleShot(200, this, SLOT(uncheck_mouse_click()));
-	}
-}
-
 void Slides::on_actionOpen_triggered()
 {
 	stop_timer();
 	image_checker = false;
 	count = 0;
-	path = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    path=QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+
 	QStringList images = path.entryList(QStringList() << "*.jpg" << "*.jpeg" << "*.bmp" << "*.pbm" << "*.pgm" << "*.ppm" << "*.xbm" << "*.xpm" << "*.png", QDir::Files);
+
 
 	foreach(QString filename, images)
 	{
@@ -372,61 +298,12 @@ void Slides::on_actionStop_triggered()
 	stop_timer();
 }
 
-void Slides::on_actionChange_image_randomly_triggered()
-{
-	next_shuffle_image();
-}
 
 void Slides::on_actionShuffle_toggled(bool arg1)
 {
 	stop_timer();
 	if (arg1) shuffle_checker = true; else shuffle_checker = false;
 	set_timer();
-}
-
-void Slides::on_actionFull_screen_triggered()
-{
-
-	ui->menubar->hide();
-	showFullScreen();
-}
-
-void Slides::on_actionMaximize_triggered()
-{
-	if (isFullScreen())
-	{
-		ui->menubar->show();
-		showMaximized();
-	}
-
-	if (isMaximized())
-	{
-		showNormal();
-	}
-	else
-	{
-		showMaximized();
-	}
-}
-
-void Slides::on_actionMinimize_triggered()
-{	
-	if (isFullScreen())
-	{
-		ui->menubar->show();
-	}
-
-	showMinimized();
-}
-
-void Slides::on_actionStandart_1280x720_triggered()
-{
-	if (isFullScreen())
-	{
-		ui->menubar->show();
-	}
-
-	setGeometry(15, 20, 1280, 720);
 }
 
 void Slides::on_actionSlow_triggered()

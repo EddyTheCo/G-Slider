@@ -53,40 +53,6 @@ outline: none;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>256</width>
-      <height>720</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:none;
-outline: none;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>10</y>
-      <width>768</width>
-      <height>720</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:none;
-outline: none;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
@@ -116,76 +82,7 @@ outline: none;</string>
    </widget>
    <zorder>label_2</zorder>
    <zorder>label</zorder>
-   <zorder>pushButton_2</zorder>
    <zorder>pushButton</zorder>
-   <zorder>pushButton_3</zorder>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionOpen"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuImage">
-    <property name="title">
-     <string>Image</string>
-    </property>
-    <widget class="QMenu" name="menuAuto_switch_image">
-     <property name="title">
-      <string>Auto-switch image</string>
-     </property>
-     <addaction name="action30_seconds"/>
-     <addaction name="action1_minute"/>
-     <addaction name="action2_minutes"/>
-     <addaction name="action5_minutes"/>
-     <addaction name="action10_minutes"/>
-     <addaction name="separator"/>
-     <addaction name="actionCustom"/>
-     <addaction name="actionStop"/>
-    </widget>
-    <widget class="QMenu" name="menuAnimation">
-     <property name="title">
-      <string>Animation</string>
-     </property>
-     <addaction name="actionSlow"/>
-     <addaction name="actionNormal"/>
-     <addaction name="actionFast"/>
-     <addaction name="separator"/>
-     <addaction name="actionNone"/>
-    </widget>
-    <addaction name="actionNext_image"/>
-    <addaction name="actionPrevious_image"/>
-    <addaction name="separator"/>
-    <addaction name="actionChange_image_randomly"/>
-    <addaction name="separator"/>
-    <addaction name="menuAuto_switch_image"/>
-    <addaction name="actionShuffle"/>
-    <addaction name="menuAnimation"/>
-   </widget>
-   <widget class="QMenu" name="menuWindow">
-    <property name="title">
-     <string>Window</string>
-    </property>
-    <addaction name="actionFull_screen"/>
-    <addaction name="actionMaximize"/>
-    <addaction name="actionMinimize"/>
-    <addaction name="separator"/>
-    <addaction name="actionStandart_1280x720"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuImage"/>
-   <addaction name="menuWindow"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
