@@ -25,12 +25,12 @@ bool timer_checker, shuffle_checker, comboBox_checker, image_checker, mouse_clic
 
 Slides::Slides(QWidget *parent)
 	: QMainWindow(parent)
-	, ui(new Ui::Slides)
+	  , ui(new Ui::Slides)
 {
 	ui->setupUi(this);
-    period = 8;
-    showFullScreen();
-    on_actionOpen_triggered();
+	period = 8;
+	showFullScreen();
+	on_actionOpen_triggered();
 	QTime time = QTime::currentTime();
 	qsrand((uint)time.msec());
 
@@ -65,7 +65,7 @@ void Slides::set_timer()
 	{
 		timer = new QTimer(this);
 		timer_checker = true;
-        connect(timer, SIGNAL(timeout()), this, SLOT(next_image()));
+		connect(timer, SIGNAL(timeout()), this, SLOT(next_image()));
 		timer->start(period*1000);
 	}
 	else if (period != 0)
@@ -217,15 +217,21 @@ void Slides::on_actionOpen_triggered()
 	image_checker = false;
 	count = 0;
 
-    path=QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+	path=QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
 
-	QStringList images = path.entryList(QStringList() << "*.jpg" << "*.jpeg" << "*.bmp" << "*.pbm" << "*.pgm" << "*.ppm" << "*.xbm" << "*.xpm" << "*.png", QDir::Files, QDir::Name);
+	QStringList images = path.entryList(QStringList() << "slide-*.jpeg" , QDir::Files);
 
 
-	foreach(QString filename, images)
+	for(int i=0;i<images.size();i++)
 	{
-		image_directory[count] = path.filePath(filename);
-		count++;
+		const auto name=path.absoluteFilePath("slide-"+QString::number(i)+".jpeg");
+		const auto fileInfo=QFileInfo(name);
+		QFile file(fileInfo.absoluteFilePath());
+		if(file.exists())
+		{
+			image_directory[count] = name;
+			count++;
+		}
 	}
 
 	if (count > 0)
