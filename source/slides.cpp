@@ -219,7 +219,7 @@ void Slides::on_actionOpen_triggered()
 
     path=QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
 
-	QStringList images = path.entryList(QStringList() << "*.jpg" << "*.jpeg" << "*.bmp" << "*.pbm" << "*.pgm" << "*.ppm" << "*.xbm" << "*.xpm" << "*.png", QDir::Files);
+	QStringList images = path.entryList(QStringList() << "*.jpg" << "*.jpeg" << "*.bmp" << "*.pbm" << "*.pgm" << "*.ppm" << "*.xbm" << "*.xpm" << "*.png", QDir::Files, QDir::Name);
 
 
 	foreach(QString filename, images)
